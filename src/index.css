@@ -1,0 +1,35 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.slick-prev {
+  left: 10px; /* atur posisi */
+  background: none !important;
+  z-index: 2;
+}
+
+.slick-prev:before {
+  content: "←";
+  color: red !important;
+  font-size: 30px;
+  opacity: 1;
+}
+
+.slick-next {
+  right: 10px;
+  background: none !important;
+  z-index: 2;
+}
+
+.slick-next:before {
+  content: "→";
+  color: red !important;
+  font-size: 30px;
+  opacity: 1;
+}
