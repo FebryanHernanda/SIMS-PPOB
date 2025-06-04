@@ -3,6 +3,7 @@ import type React from "react";
 type ButtonVariant =
   | "primary"
   | "secondary"
+  | "outlined"
   | "disabled"
   | "linkPrimary"
   | "linkSecondary";

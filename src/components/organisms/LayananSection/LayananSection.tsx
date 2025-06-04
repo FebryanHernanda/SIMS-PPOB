@@ -10,7 +10,7 @@ const LayananSection = () => {
             key={index}
             src="/src/assets/Listrik.png"
             alt="logo"
-            className="w-30"
+            className="w-25"
           />
         ))}
       </div>

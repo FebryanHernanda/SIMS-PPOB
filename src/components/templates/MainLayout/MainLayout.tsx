@@ -1,13 +1,15 @@
-import type React from "react";
-
-import { Footer, Navbar } from "../../organisms";
+import { DashboardHeaderSection, Footer, Navbar } from "../../organisms";
 import type { MainLayoutProps } from "./MainLayout.types";
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  dashboardSection,
+}) => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen gap-10 lg:text-left">
       <Navbar />
-      <main className="flex-grow p-5 py-10">{children}</main>
+      {dashboardSection && <DashboardHeaderSection />}
+      <main className="flex-grow">{children}</main>
       <Footer />
     </div>
   );

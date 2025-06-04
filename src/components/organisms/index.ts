@@ -4,3 +4,8 @@ export * from "./SliderBanner";
 export * from "./DashboardHeaderSection";
 export * from "./LayananSection";
 export * from "./PromoSection";
+export * from "./LoginForm";
+export * from "./RegistrasiForm";
+export * from "./PembayaranForm";
+export * from "./TopupForm";
+export * from "./ProfileForm";

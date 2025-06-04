@@ -1,6 +1,6 @@
 type LinkProps = {
   href: string;
-  target?: string;
+  target?: React.HTMLAttributeAnchorTarget;
   children: React.ReactNode;
 };
 
