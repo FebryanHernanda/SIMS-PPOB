@@ -13,9 +13,6 @@ import {
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
-  const isAuthenticated = Boolean(localStorage.getItem("token"));
-  console.log(isAuthenticated);
-
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
@@ -82,16 +79,16 @@ const AppRouter = () => {
         element={<div className="mt-20">404 - Halaman tidak ditemukan!</div>}
       />
 
-      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
-        <Route
-          path="/home"
-          element={
+      <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
             <MainLayout dashboardSection={true}>
               <HomePage />
             </MainLayout>
-          }
-        ></Route>
-      </Route>
+          </ProtectedRoute>
+        }
+      ></Route>
     </Routes>
   );
 };

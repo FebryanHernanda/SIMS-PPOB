@@ -1,18 +1,17 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../hooks/hooks";
 
 type ProtectedRouteProps = {
-  isAuthenticated: boolean;
-  redirectPath?: string;
+  children: React.ReactNode;
 };
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  isAuthenticated,
-  redirectPath = "/",
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
   if (!isAuthenticated) {
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to={"/"} replace />;
   }
-  return <Outlet />;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

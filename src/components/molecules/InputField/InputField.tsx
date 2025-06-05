@@ -7,9 +7,12 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChange,
   onClick,
+  onBlur,
   required = false,
   name,
-  value,
+  value = "",
+  error,
+  readOnly,
 }) => {
   return (
     <div className="flex flex-col gap-2 text-left">
@@ -20,10 +23,13 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChange={onChange}
         onClick={onClick}
+        onBlur={onBlur}
         required={required}
         name={name}
         value={value}
+        readOnly={readOnly}
       />
+      {error && <span className="text-red-500">{error}</span>}
     </div>
   );
 };

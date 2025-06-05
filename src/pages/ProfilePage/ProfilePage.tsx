@@ -1,11 +1,19 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Link, Typography } from "../../components/atoms";
+import { Button, Typography } from "../../components/atoms";
 import { Avatar } from "../../components/molecules";
 import { ProfileForm } from "../../components/organisms";
+import { useAppDispatch } from "../../hooks/hooks";
+import { logout } from "../../redux/slices/AuthSlice";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   const isEditMode = location.pathname === "/profile/edit";
 
@@ -29,11 +37,14 @@ const ProfilePage = () => {
               Edit Profile
             </Button>
 
-            <Link href="/">
-              <Button type="submit" variant="secondary" className="w-full">
-                Logout
-              </Button>
-            </Link>
+            <Button
+              type="submit"
+              variant="secondary"
+              className="w-full"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </div>
         )}
       </div>

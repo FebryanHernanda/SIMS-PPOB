@@ -6,7 +6,9 @@ type ButtonVariant =
   | "outlined"
   | "disabled"
   | "linkPrimary"
-  | "linkSecondary";
+  | "linkSecondary"
+  | "linkSecondaryActive"
+  | "navActive";
 
 type ButtonProps = {
   type?: "button" | "submit" | "reset";
