@@ -6,7 +6,7 @@ const Avatar: React.FC<AvatarProps> = ({ className }) => {
   return (
     <div className="border-2 border-gray-300 rounded-full w-fit">
       <Image
-        src="/src/assets/Profile-Photo.png"
+        src="/assets/Profile-Photo.png"
         alt="Avatar Image"
         className={`${className} rounded-full`}
       />

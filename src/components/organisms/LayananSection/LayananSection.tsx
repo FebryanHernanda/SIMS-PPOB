@@ -20,7 +20,7 @@ const LayananSection = () => {
             <Image
               src={data.service_icon}
               alt={data.service_name}
-              className="w-27"
+              className="w-28"
             />
           </Link>
         ))}

@@ -19,7 +19,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ title, form }) => {
         </div>
         <div className="hidden sm:block h-80 w-full lg:w-[600px] lg:h-full ">
           <Image
-            src="/src/assets/Illustrasi-Login.png"
+            src="/assets/Illustrasi-Login.png"
             alt="Ilustrasi Login"
             className="object-cover w-full h-full rounded-2xl"
           />
