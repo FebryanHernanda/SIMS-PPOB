@@ -25,17 +25,19 @@ const CardSaldo = () => {
         {showSaldo ? `${moneyFormat(amount.balance.toString())}` : "Rp •••••••"}
       </Typography>
       <button type="button" onClick={handleShow}>
-        {showSaldo ? (
-          <div className="flex flex-row items-center gap-2">
-            <Typography variant="h6">Sembunyikan Saldo</Typography>
-            <EyeOff size={18} />
-          </div>
-        ) : (
-          <div className="flex flex-row items-center gap-2">
-            <Typography variant="h6">Lihat Saldo</Typography>
-            <Eye size={18} />
-          </div>
-        )}
+        <div className="cursor-pointer w-fit">
+          {showSaldo ? (
+            <div className="flex flex-row items-center gap-2">
+              <Typography variant="h6">Sembunyikan Saldo</Typography>
+              <EyeOff size={18} />
+            </div>
+          ) : (
+            <div className="flex flex-row items-center gap-2">
+              <Typography variant="h6">Lihat Saldo</Typography>
+              <Eye size={18} />
+            </div>
+          )}
+        </div>
       </button>
     </div>
   );

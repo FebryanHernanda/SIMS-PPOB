@@ -29,7 +29,7 @@ const LoginForm = () => {
       const timer = setTimeout(() => {
         navigate("/home");
         dispatch(clearMessages());
-      }, 2000);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [successMessage, navigate, dispatch]);

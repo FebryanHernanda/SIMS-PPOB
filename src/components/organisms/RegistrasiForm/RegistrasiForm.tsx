@@ -8,7 +8,10 @@ import {
 import { Button, Link } from "../../atoms";
 import { InputField } from "../../molecules";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 const RegistrasiForm = () => {
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -27,6 +30,16 @@ const RegistrasiForm = () => {
       dispatch(clearAuthState());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        navigate("/");
+        dispatch(clearAuthState());
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, navigate, dispatch]);
 
   const onSubmit = (data: RegisterInput) => {
     if (data.password !== data.confirmPassword) {
