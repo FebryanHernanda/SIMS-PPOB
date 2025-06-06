@@ -3,6 +3,9 @@ import topupReducer from "./slices/TopUpSlices";
 import paymentReducer from "./slices/PembayaranSlices";
 import dialogReducer from "./slices/DialogSlices";
 import authReducer from "./slices/AuthSlice";
+import informationReducer from "./slices/InformationSlices";
+import getBalance from "./slices/BalanceSlice";
+import getTransactionsHistory from "./slices/TransactionHistoryslice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +13,9 @@ export const store = configureStore({
     payment: paymentReducer,
     dialog: dialogReducer,
     auth: authReducer,
+    information: informationReducer,
+    balance: getBalance,
+    transactionHistory: getTransactionsHistory,
   },
 });
 

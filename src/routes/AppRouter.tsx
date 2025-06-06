@@ -17,66 +17,67 @@ const AppRouter = () => {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/register" element={<RegistrasiPage />} />
-      {/* testing route */}
-      <Route
-        path="/homepage"
-        element={
-          <MainLayout dashboardSection={true}>
-            <HomePage />
-          </MainLayout>
-        }
-      />
+
       <Route
         path="/pembayaran"
         element={
-          <MainLayout dashboardSection={true}>
-            <PembayaranPage />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout dashboardSection={true}>
+              <PembayaranPage />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/topup"
         element={
-          <MainLayout dashboardSection={true}>
-            <TopUpPage />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout dashboardSection={true}>
+              <TopUpPage />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/transaksi"
         element={
-          <MainLayout dashboardSection={true}>
-            <TransaksiPage />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout dashboardSection={true}>
+              <TransaksiPage />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/transaksi/history"
         element={
-          <MainLayout dashboardSection={true}>
-            <HistoryTransaksiPage />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout dashboardSection={true}>
+              <HistoryTransaksiPage />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/profile"
         element={
-          <MainLayout dashboardSection={false}>
-            <ProfilePage />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout dashboardSection={false}>
+              <ProfilePage />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
+
       <Route
         path="/profile/edit"
         element={
-          <MainLayout dashboardSection={false}>
-            <ProfilePage />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout dashboardSection={false}>
+              <ProfilePage />
+            </MainLayout>
+          </ProtectedRoute>
         }
-      />
-      <Route
-        path="*"
-        element={<div className="mt-20">404 - Halaman tidak ditemukan!</div>}
       />
 
       <Route
@@ -88,7 +89,12 @@ const AppRouter = () => {
             </MainLayout>
           </ProtectedRoute>
         }
-      ></Route>
+      />
+
+      <Route
+        path="*"
+        element={<div className="mt-20">404 - Halaman tidak ditemukan!</div>}
+      />
     </Routes>
   );
 };

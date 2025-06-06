@@ -8,7 +8,8 @@ type ButtonVariant =
   | "linkPrimary"
   | "linkSecondary"
   | "linkSecondaryActive"
-  | "navActive";
+  | "navActive"
+  | "navNotActive";
 
 type ButtonProps = {
   type?: "button" | "submit" | "reset";

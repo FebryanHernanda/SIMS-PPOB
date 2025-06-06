@@ -10,6 +10,8 @@ type InputFieldProps = {
   error?: string;
   onBlur?: () => void;
   readOnly?: boolean;
+  accept?: string;
+  className?: string;
 };
 
 export type { InputFieldProps };

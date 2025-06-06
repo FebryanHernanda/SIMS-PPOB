@@ -1,20 +1,32 @@
 import { Controller, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import {
+  clearAuthState,
   registerUser,
   type RegisterInput,
 } from "../../../redux/slices/AuthSlice";
 import { Button, Link } from "../../atoms";
 import { InputField } from "../../molecules";
+import { useEffect } from "react";
 const RegistrasiForm = () => {
   const {
     control,
     handleSubmit,
     getValues,
     formState: { isSubmitting },
-  } = useForm<RegisterInput>();
+  } = useForm<RegisterInput>({
+    mode: "onChange",
+  });
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.auth);
+  const { loading, error, successMessage } = useAppSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthState());
+    };
+  }, [dispatch]);
 
   const onSubmit = (data: RegisterInput) => {
     if (data.password !== data.confirmPassword) {
@@ -33,6 +45,18 @@ const RegistrasiForm = () => {
 
   return (
     <div className="w-full lg:p-5">
+      <div className="mb-5">
+        {successMessage && (
+          <div className="p-2 mx-auto font-bold text-gray-600 bg-green-200 rounded-sm text-md ">
+            {successMessage}
+          </div>
+        )}
+        {error && (
+          <div className="p-2 mx-auto font-bold text-gray-600 bg-red-200 rounded-sm text-md ">
+            {error}
+          </div>
+        )}
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <Controller
@@ -60,6 +84,10 @@ const RegistrasiForm = () => {
             control={control}
             rules={{
               required: "Nama depan wajib diisi",
+              pattern: {
+                value: /^[A-Za-z\s]+$/i,
+                message: "Nama hanya boleh berisi huruf",
+              },
             }}
             render={({ field, fieldState }) => (
               <InputField
@@ -76,6 +104,10 @@ const RegistrasiForm = () => {
             control={control}
             rules={{
               required: "Nama belakang wajib diisi",
+              pattern: {
+                value: /^[A-Za-z\s]+$/i,
+                message: "Nama hanya boleh berisi huruf",
+              },
             }}
             render={({ field, fieldState }) => (
               <InputField
@@ -132,12 +164,7 @@ const RegistrasiForm = () => {
           </Button>
         </div>
       </form>
-      {error && <div className="text-red-600 mt-4">{error}</div>}
-      {/* {successMessage && (
-        <div className="mb-4 text-green-600 font-semibold">
-          {successMessage}
-        </div>
-      )} */}
+
       <div className="mt-10">
         <Link href="/">
           Sudah punya akun? Login <span className="text-red-500">disini</span>

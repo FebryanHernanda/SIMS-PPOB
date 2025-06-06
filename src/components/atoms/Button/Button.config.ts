@@ -14,6 +14,8 @@ const styleConfig: Record<ButtonVariant, string> = {
     "text-gray-600 w-23 cursor-pointer p-2 rounded-sm hover:bg-gray-100",
   linkSecondaryActive:
     "bg-gray-100 text-red-500 w-23 p-2 rounded-md cursor-pointer font-bold",
+  navNotActive:
+    "text-gray-600 w-30 cursor-pointer p-2 rounded-sm hover:bg-gray-100",
   navActive:
     "bg-gray-100 text-red-500 w-30 p-2 rounded-md cursor-pointer font-bold",
 } as const;

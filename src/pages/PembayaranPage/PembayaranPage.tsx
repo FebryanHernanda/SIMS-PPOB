@@ -2,50 +2,60 @@ import { useLocation } from "react-router-dom";
 import { Button, Image, Typography } from "../../components/atoms";
 import { PembayaranForm } from "../../components/organisms";
 import { DialogModal } from "../../components/molecules";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../redux/store";
 import {
   closeModal,
   openErrorModal,
   openSuccessModal,
   setLoading,
 } from "../../redux/slices/DialogSlices";
-import { moneyFormat } from "../../utils/moneyFormat";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import {
+  postPayment,
+  type TransactionData,
+} from "../../redux/slices/PembayaranSlices";
+import { updateBalance } from "../../redux/slices/BalanceSlice";
 
 const PembayaranPage = () => {
   const location = useLocation();
   const layanan = location.state?.layanan;
 
-  const dispatch = useDispatch();
-  const { nominal } = useSelector((state: RootState) => state.payment);
-  const { isLoading, isModalOpen, isSuccessModal, isErrorModal } = useSelector(
-    (state: RootState) => state.dialog
-  );
-
-  // simulate payment
-
-  const simulatePayment = async () => {
-    return new Promise<boolean>((resolve) => {
-      setTimeout(() => {
-        const success = Math.random() > 0.25;
-        resolve(success);
-      }, 2000);
-    });
-  };
-
-  //confirm payment function
+  const dispatch = useAppDispatch();
+  const { nominal } = useAppSelector((state) => state.payment);
+  const { isLoading, isModalOpen, isSuccessModal, isErrorModal } =
+    useAppSelector((state) => state.dialog);
+  const error = useAppSelector((state) => state.payment.error);
+  const balance = useAppSelector((state) => state.balance.balance);
 
   const onConfirmPayment = async () => {
     dispatch(setLoading(true));
-    const success = await simulatePayment();
+
+    if (Number(nominal) > balance) {
+      dispatch(setLoading(false));
+      dispatch(closeModal());
+      dispatch(openErrorModal());
+      return;
+    }
+
+    const transactionData = {
+      invoice_number: "",
+      service_code: layanan.service_code,
+      service_name: layanan.service_name,
+      description: layanan.service_name,
+      transaction_type: "PAYMENT",
+      total_amount: Number(nominal),
+      created_on: new Date().toISOString(),
+    } as TransactionData;
+
+    const resultAction = await dispatch(postPayment(transactionData));
+
     dispatch(setLoading(false));
     dispatch(closeModal());
-    if (success) {
+
+    if (postPayment.fulfilled.match(resultAction)) {
       dispatch(openSuccessModal());
-      console.log("Pembayaran Sukses: ", moneyFormat(nominal));
+      dispatch(updateBalance(-Number(nominal)));
     } else {
       dispatch(openErrorModal());
-      console.log("Pembayaran Gagal : ", moneyFormat(nominal));
     }
   };
 
@@ -53,8 +63,12 @@ const PembayaranPage = () => {
     <section className="flex flex-col gap-5 py-5">
       <Typography variant="h3">Pembayaran</Typography>
       <div className="flex items-center gap-5">
-        <Image src={layanan.image} alt="logo layanan" className="w-10" />
-        <Typography variant="h4">{layanan.name} Prabayar</Typography>
+        <Image
+          src={layanan?.service_icon}
+          alt="logo layanan"
+          className="w-10"
+        />
+        <Typography variant="h4">{layanan.service_name}</Typography>
       </div>
       <PembayaranForm />
 
@@ -63,7 +77,7 @@ const PembayaranPage = () => {
         isOpen={isModalOpen}
         onClose={() => dispatch(closeModal())}
         nominal={Number(nominal)}
-        title={`Beli ${layanan.name} Prabayar sebesar`}
+        title={`Beli ${layanan.service_name} Prabayar sebesar`}
       >
         <div className="flex flex-row gap-3">
           <Button
@@ -73,7 +87,7 @@ const PembayaranPage = () => {
           >
             {isLoading ? (
               <div className="flex items-center gap-2">
-                <span className="animate-spin h-4 w-4 border-2 border-gray-700 border-t-transparent rounded-full" />
+                <span className="w-4 h-4 border-2 border-gray-700 rounded-full animate-spin border-t-transparent" />
                 Loading...
               </div>
             ) : (
@@ -117,7 +131,7 @@ const PembayaranPage = () => {
         onClose={() => dispatch(closeModal())}
         nominal={Number(nominal)}
         title="Pembayaran Sebesar"
-        message="Gagal!"
+        message={error || "Gagal! Pastikan Saldo Anda Cukup"}
         status="error"
       >
         <div className="flex flex-row gap-3">

@@ -1,13 +1,19 @@
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { loginUser, type LoginInput } from "../../../redux/slices/AuthSlice";
+import {
+  clearMessages,
+  loginUser,
+  type LoginInput,
+} from "../../../redux/slices/AuthSlice";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { Button, Link } from "../../atoms";
 import { InputField } from "../../molecules";
 
 const LoginForm = () => {
-  const { handleSubmit, control } = useForm<LoginInput>();
+  const { handleSubmit, control } = useForm<LoginInput>({
+    mode: "onChange",
+  });
   const dispatch = useAppDispatch();
   const { loading, error, successMessage } = useAppSelector(
     (state) => state.auth
@@ -22,13 +28,27 @@ const LoginForm = () => {
     if (successMessage) {
       const timer = setTimeout(() => {
         navigate("/home");
+        dispatch(clearMessages());
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [successMessage, navigate]);
+  }, [successMessage, navigate, dispatch]);
 
   return (
     <div className="w-full lg:p-5">
+      <div className="mb-10">
+        {successMessage && (
+          <div className="p-2 mx-auto font-bold text-gray-600 bg-green-200 rounded-sm text-md ">
+            {successMessage}
+          </div>
+        )}
+        {error && (
+          <div className="p-2 mx-auto font-bold text-gray-600 bg-red-200 rounded-sm text-md ">
+            {error}
+          </div>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <Controller
@@ -68,14 +88,10 @@ const LoginForm = () => {
             )}
           />
           <Button type="submit" disabled={loading}>
-            {loading ? "Loading..." : "login"}
+            {loading ? "Loading..." : "Login"}
           </Button>
         </div>
       </form>
-      {successMessage && (
-        <div className="text-green-600 font-semibold">{successMessage}</div>
-      )}
-      {error && <div className="text-red-600 mt-4">{error}</div>}
       <div className="mt-10">
         <Link href="/register">
           Belum punya akun?{" "}

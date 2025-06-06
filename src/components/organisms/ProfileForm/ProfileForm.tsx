@@ -1,82 +1,23 @@
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { Button } from "../../atoms";
 import { InputField } from "../../molecules";
-import { useLocation } from "react-router-dom";
+import { useAppSelector } from "../../../hooks/hooks";
 
-type ProfileFormProps = {
-  isEditProfile?: boolean;
-  onSubmit?: () => void;
-};
-
-const ProfileForm = ({ isEditProfile, onSubmit }: ProfileFormProps) => {
-  const { handleSubmit, control } = useForm();
-
-  const location = useLocation();
-  const isEditPage = location.pathname === "/profile/edit";
-
-  const onSubmitHandler: SubmitHandler<ProfileFormProps> = (data) => {
-    if (onSubmit) {
-      onSubmit();
-    }
-    console.log("Form Data:", data);
-  };
+const ProfileForm = () => {
+  const profile = useAppSelector((state) => state.auth.user);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <div className="flex flex-col gap-5">
-        <Controller
-          name="email"
-          control={control}
-          rules={{
-            required: "email wajib diisi",
-            pattern: {
-              value: /^\S+@\S+$/i,
-              message: "Format email tidak valid",
-            },
-          }}
-          render={({ field, fieldState }) => (
-            <InputField
-              {...field}
-              label="Email"
-              placeholder="Email"
-              readOnly={!isEditPage}
-              error={fieldState.error?.message}
-            />
-          )}
-        />
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => (
-            <InputField
-              {...field}
-              label="Nama Depan"
-              placeholder="Febryan"
-              readOnly={!isEditPage}
-            />
-          )}
-        />
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <InputField
-              {...field}
-              label="Nama Belakang"
-              placeholder="Hernanda"
-              readOnly={!isEditPage}
-            />
-          )}
-        />
-        <div className="flex flex-col gap-5">
-          {isEditProfile && (
-            <Button type="submit" variant="primary">
-              Simpan
-            </Button>
-          )}
-        </div>
-      </div>
-    </form>
+    <div className="flex flex-col max-w-sm gap-5 mx-auto lg:max-w-lg">
+      <InputField label="Email" value={profile?.email || ""} readOnly />
+      <InputField
+        label="Nama Depan"
+        value={profile?.first_name || ""}
+        readOnly
+      />
+      <InputField
+        label="Nama Belakang"
+        value={profile?.last_name || ""}
+        readOnly
+      />
+    </div>
   );
 };
 

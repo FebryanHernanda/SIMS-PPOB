@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Link, Typography } from "../../components/atoms";
 import { CardTransaksi } from "../../components/molecules";
-import { dataTransaksi } from "../../data/data";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getTransactionHistory } from "../../redux/slices/TransactionHistoryslice";
+import formatDate from "../../utils/dateFormat";
 
 const HistoryTransaksiPage = () => {
+  const dispatch = useAppDispatch();
+  const { transactions } = useAppSelector((state) => state.transactionHistory);
+
   const bulan = [
     "Januari",
     "Februari",
@@ -27,14 +32,26 @@ const HistoryTransaksiPage = () => {
     return capitalize(currentMonth);
   });
 
+  useEffect(() => {
+    dispatch(getTransactionHistory());
+  }, [dispatch]);
+
   const filteredTransaksi = selectedMonth
-    ? dataTransaksi.filter((trx) => trx.bulan === selectedMonth)
-    : dataTransaksi.slice(0, 3);
+    ? transactions.filter((trx) => {
+        const bulanTransaksi = new Date(trx.created_on).toLocaleString(
+          "id-ID",
+          {
+            month: "long",
+          }
+        );
+        return capitalize(bulanTransaksi) === selectedMonth;
+      })
+    : transactions.slice(0, 3);
 
   return (
-    <section className="flex flex-col  gap-5 p-5 py-5 lg:p-0">
+    <section className="flex flex-col gap-5 p-5 py-5 lg:p-0">
       <Typography variant="h2">Semua Transaksi</Typography>
-      <ul className="flex flex-wrap justify-center lg:justify-start gap-3">
+      <ul className="flex flex-wrap justify-center gap-3 lg:justify-start">
         {bulan.map((bulan) => (
           <li key={bulan}>
             <Button
@@ -51,8 +68,14 @@ const HistoryTransaksiPage = () => {
         ))}
       </ul>
       {filteredTransaksi.length > 0 ? (
-        filteredTransaksi.map((trx, index) => (
-          <CardTransaksi key={index} price={`${trx.price}`} desc={trx.desc} />
+        filteredTransaksi.map((data, index) => (
+          <CardTransaksi
+            key={index}
+            price={`${data.total_amount}`}
+            desc={data.description}
+            date={formatDate(data.created_on)}
+            transactionType={data.transaction_type}
+          />
         ))
       ) : (
         <div className="mt-10">

@@ -9,3 +9,4 @@ export * from "./RegistrasiForm";
 export * from "./PembayaranForm";
 export * from "./TopupForm";
 export * from "./ProfileForm";
+export * from "./EditProfileForm";

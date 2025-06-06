@@ -1,6 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../redux/store";
-import { setNominal } from "../../redux/slices/TopUpSlices";
+import { postTopup, setNominal } from "../../redux/slices/TopUpSlices";
 import { Button, Typography } from "../../components/atoms";
 import { DialogModal } from "../../components/molecules";
 import { TopupForm } from "../../components/organisms";
@@ -10,34 +8,27 @@ import {
   openSuccessModal,
   setLoading,
 } from "../../redux/slices/DialogSlices";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
 const TopUpPage = () => {
-  const dispatch = useDispatch();
-  const nominal = useSelector((state: RootState) => state.topup.nominal);
-  const { isLoading, isModalOpen, isSuccessModal, isErrorModal } = useSelector(
-    (state: RootState) => state.dialog
-  );
+  const dispatch = useAppDispatch();
+  const nominal = useAppSelector((state) => state.topup.nominal);
+  const { isLoading, isModalOpen, isSuccessModal, isErrorModal } =
+    useAppSelector((state) => state.dialog);
 
   const handleNominalClick = (value: number) => {
     dispatch(setNominal(value.toString()));
   };
 
-  // tes async topup
-  const simulateTopUp = async () => {
-    return new Promise<boolean>((resolve) => {
-      setTimeout(() => {
-        const success = Math.random() > 0.25;
-        resolve(success);
-      }, 1000);
-    });
-  };
-
   const onConfirmTopUp = async () => {
     dispatch(setLoading(true));
-    const success = await simulateTopUp();
+    const resultAction = await dispatch(
+      postTopup({ top_up_amount: Number(nominal) })
+    );
     dispatch(setLoading(false));
     dispatch(closeModal());
-    if (success) {
+
+    if (postTopup.fulfilled.match(resultAction)) {
       dispatch(openSuccessModal());
     } else {
       dispatch(openErrorModal());
@@ -49,7 +40,7 @@ const TopUpPage = () => {
         <Typography variant="h4">Silahkan Masukan</Typography>
         <Typography variant="h1">Nominal TopUp</Typography>
       </div>
-      <div className="flex flex-col items-center justify-between gap-5 lg:flex-row">
+      <div className="flex flex-col justify-between gap-5 lg:flex-row">
         <div className="w-full lg:w-2xl">
           <TopupForm />
         </div>
@@ -81,7 +72,7 @@ const TopUpPage = () => {
           <Button type="button" variant="linkPrimary" onClick={onConfirmTopUp}>
             {isLoading ? (
               <div className="flex items-center gap-2">
-                <span className="animate-spin h-4 w-4 border-2 border-gray-700 border-t-transparent rounded-full" />
+                <span className="w-4 h-4 border-2 border-gray-700 rounded-full animate-spin border-t-transparent" />
                 Loading...
               </div>
             ) : (
@@ -91,7 +82,10 @@ const TopUpPage = () => {
           <Button
             type="button"
             variant="linkSecondary"
-            onClick={() => dispatch(closeModal())}
+            onClick={() => {
+              dispatch(closeModal());
+              dispatch(setNominal(""));
+            }}
           >
             Batalkan
           </Button>
@@ -101,7 +95,10 @@ const TopUpPage = () => {
       {/* Success Dialog */}
       <DialogModal
         isOpen={isSuccessModal}
-        onClose={() => dispatch(closeModal())}
+        onClose={() => {
+          dispatch(closeModal());
+          dispatch(setNominal(""));
+        }}
         nominal={Number(nominal)}
         title="Top Up Sebesar"
         message="Berhasil!"

@@ -13,6 +13,8 @@ const InputField: React.FC<InputFieldProps> = ({
   value = "",
   error,
   readOnly,
+  accept,
+  className,
 }) => {
   return (
     <div className="flex flex-col gap-2 text-left">
@@ -28,6 +30,8 @@ const InputField: React.FC<InputFieldProps> = ({
         name={name}
         value={value}
         readOnly={readOnly}
+        accept={accept}
+        className={`${className}`}
       />
       {error && <span className="text-red-500">{error}</span>}
     </div>

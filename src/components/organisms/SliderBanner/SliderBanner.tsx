@@ -4,8 +4,18 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { Image } from "../../atoms";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { getBanners } from "../../../redux/slices/InformationSlices";
+import { useEffect } from "react";
 
 const SliderBanner = () => {
+  const dispatch = useAppDispatch();
+  const banner = useAppSelector((state) => state.information);
+
+  useEffect(() => {
+    dispatch(getBanners());
+  }, [dispatch]);
+
   const settings = {
     dots: true,
     arrows: true,
@@ -19,41 +29,11 @@ const SliderBanner = () => {
   return (
     <div className="px-10">
       <Slider {...settings}>
-        <div className="p-5">
-          <Image
-            src="/src/assets/Banner-1.png"
-            alt="banner"
-            className="w-100"
-          ></Image>
-        </div>
-        <div className="p-5">
-          <Image
-            src="/src/assets/Banner-2.png"
-            alt="banner"
-            className="w-100"
-          ></Image>
-        </div>
-        <div className="p-5">
-          <Image
-            src="/src/assets/Banner-3.png"
-            alt="banner"
-            className="w-100"
-          ></Image>
-        </div>
-        <div className="p-5">
-          <Image
-            src="/src/assets/Banner-4.png"
-            alt="banner"
-            className="w-100"
-          ></Image>
-        </div>
-        <div className="p-5">
-          <Image
-            src="/src/assets/Banner-5.png"
-            alt="banner"
-            className="w-100"
-          ></Image>
-        </div>
+        {banner.banners.map((banner, index) => (
+          <div key={index} className="p-5 ">
+            <Image src={banner.banner_image} alt={banner.banner_name} />
+          </div>
+        ))}
       </Slider>
     </div>
   );

@@ -1,46 +1,52 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
-import { moneyFormat } from "../../../utils/moneyFormat";
 import type { RootState } from "../../../redux/store";
 import { Button } from "../../atoms";
 import { InputField } from "../../molecules";
 import { setNominal } from "../../../redux/slices/TopUpSlices";
 import { openModal } from "../../../redux/slices/DialogSlices";
+import moneyFormat from "../../../utils/moneyFormat";
 type FormValues = {
   nominal: string;
 };
 const TopupForm = () => {
   const dispatch = useDispatch();
   const nominalState = useSelector((state: RootState) => state.topup.nominal);
-
+  const previousNominalState = useRef<string | undefined>(undefined);
   const {
     handleSubmit,
     control,
-    watch,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
+    mode: "onChange",
     defaultValues: {
       nominal: "",
     },
   });
 
+  // Pantau perubahan nominal di form
   const nominal = watch("nominal");
 
   useEffect(() => {
-    setValue("nominal", nominalState);
+    if (
+      nominalState !== undefined &&
+      nominalState !== previousNominalState.current
+    ) {
+      setValue("nominal", nominalState);
+      previousNominalState.current = nominalState;
+    }
   }, [nominalState, setValue]);
 
-  useEffect(() => {
-    dispatch(setNominal(nominal));
-  }, [dispatch, nominal]);
-
   const onSubmit = (data: FormValues) => {
-    if (data.nominal && !isNaN(Number(data.nominal))) {
+    const numValue = Number(data.nominal);
+
+    if (numValue >= 10000 && numValue <= 1000000) {
+      dispatch(setNominal(data.nominal));
       dispatch(openModal());
     }
-    console.log("Data Kamu : ", data.nominal);
   };
 
   const isDisabled = !nominal || isNaN(Number(nominal));
@@ -52,6 +58,26 @@ const TopupForm = () => {
           <Controller
             name="nominal"
             control={control}
+            rules={{
+              required: "Nominal top up wajib diisi",
+              validate: (value) => {
+                const numValue = Number(value);
+
+                if (isNaN(numValue) || numValue <= 0) {
+                  return "Nominal harus berupa angka yang valid";
+                }
+
+                if (numValue < 10000) {
+                  return "Minimum nominal top up adalah Rp 10.000";
+                }
+
+                if (numValue > 1000000) {
+                  return "Maksimum nominal top up adalah Rp 1.000.000";
+                }
+
+                return true;
+              },
+            }}
             render={({ field }) => {
               const rawValue = field.value.replace(/\D/g, "");
               const formattedValue = moneyFormat(rawValue);
@@ -70,6 +96,7 @@ const TopupForm = () => {
               );
             }}
           />
+
           <Button
             type="submit"
             disabled={isDisabled}
@@ -78,9 +105,13 @@ const TopupForm = () => {
             Top Up
           </Button>
         </div>
-        {errors.nominal && (
-          <p className="text-red-500 text-sm mt-1">{errors.nominal.message}</p>
-        )}
+        <div>
+          {errors.nominal && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.nominal.message}
+            </p>
+          )}
+        </div>
       </form>
     </>
   );

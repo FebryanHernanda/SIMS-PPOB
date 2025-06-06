@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="p-3 border-gray-300 py-7 border-b-1">
       <div className="flex flex-row items-center justify-between">
-        <Link href="/homepage">
+        <Link href="/home">
           <Logo />
         </Link>
 
@@ -18,7 +18,7 @@ const Navbar = () => {
             <Link href="/topup">
               <Button
                 type="button"
-                variant={pathname === "/topup" ? "navActive" : "linkSecondary"}
+                variant={pathname === "/topup" ? "navActive" : "navNotActive"}
               >
                 Top Up
               </Button>
@@ -31,7 +31,7 @@ const Navbar = () => {
                 variant={
                   pathname.startsWith("/transaksi")
                     ? "navActive"
-                    : "linkSecondary"
+                    : "navNotActive"
                 }
               >
                 Transactions
@@ -43,9 +43,7 @@ const Navbar = () => {
               <Button
                 type="button"
                 variant={
-                  pathname.startsWith("/profile")
-                    ? "navActive"
-                    : "linkSecondary"
+                  pathname.startsWith("/profile") ? "navActive" : "navNotActive"
                 }
               >
                 Akun
