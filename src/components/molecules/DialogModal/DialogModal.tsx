@@ -41,7 +41,7 @@ const DialogModal: React.FC<DialogModalProps> = ({
           {status ? (
             <Typography variant="h1">{defaultIcon}</Typography>
           ) : (
-            <Image src="/assets/logo.png" alt="Icon Dompet" className="w-15" />
+            <Image src="/assets/Logo.png" alt="Icon Dompet" className="w-15" />
           )}
         </div>
         <div className="space-y-2 text-center">
