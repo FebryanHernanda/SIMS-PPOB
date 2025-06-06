@@ -23,5 +23,18 @@ dist-ssr
 *.sln
 *.sw?
 
-# environtment variables
+# Environment variables
 .env
+
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Build caches
+.cache/
+.parcel-cache/
