@@ -19,7 +19,7 @@ const AppRouter = () => {
       <Route path="/register" element={<RegistrasiPage />} />
 
       <Route
-        path="/pembayaran"
+        path="/pembayaran/:layanan"
         element={
           <ProtectedRoute>
             <MainLayout dashboardSection={true}>

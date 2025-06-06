@@ -16,7 +16,13 @@ const LayananSection = () => {
       <Typography variant="h4">Layanan</Typography>
       <div className="flex flex-row flex-wrap justify-center gap-5">
         {services.map((data, index) => (
-          <Link key={index} href={`/pembayaran`} state={{ layanan: data }}>
+          <Link
+            key={index}
+            href={`/pembayaran/${encodeURIComponent(
+              data.service_code.toLowerCase()
+            )}`}
+            state={{ layanan: data }}
+          >
             <Image
               src={data.service_icon}
               alt={data.service_name}
