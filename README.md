@@ -1,54 +1,68 @@
-# React + TypeScript + Vite
+# SIMS PPOB
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple PPOB (Payment Point Online Bank) simulation project built using **React**, **TypeScript**, and **Vite**.  
+This application allows users to select and simulate payments for various digital services.
 
-Currently, two official plugins are available:
+## 🔗 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[🌐 Visit the app](https://sims-ppob-alpha.vercel.app)
 
-## Expanding the ESLint configuration
+## 📸 Screenshots
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Home Page
+![image](https://github.com/user-attachments/assets/631a0ac2-1b26-46cd-94f7-b0f469ef7730)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+
+### Login Page
+![image](https://github.com/user-attachments/assets/0d7d0df8-2802-4fed-b9e2-f32aa26f45b4)
+
+
+### Top Up Page
+![image](https://github.com/user-attachments/assets/521105f5-9ea4-4d91-ba76-e1f0a2ea3f20)
+
+> Make sure to place your screenshots in a `/screenshots` folder in the root directory of the project.
+
+## ⚙️ Getting Started
+
+Follow these steps to run the project locally:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/FebryanHernanda/SIMS-PPOB.git
+cd SIMS-PPOB
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+### 3. Start the development server
+
+```bash
+npm run dev
+```
+
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
+
+> Ensure you have **Node.js (v18 or later)** and **npm** installed on your machine.
+
+## 🛠️ Built With
+
+- ⚛️ [React](https://reactjs.org/)
+- 🟦 [TypeScript](https://www.typescriptlang.org/)
+- ⚡ [Vite](https://vitejs.dev/)
+- 🎨 [Tailwind CSS](https://tailwindcss.com/)
+- 🧠 [Redux Toolkit](https://redux-toolkit.js.org/)
+- 💡 [React Icons](https://react-icons.github.io/react-icons/)
+
+
+## 📄 License
+
+This project is for educational and test submission purposes only.
+
+---
+
+Thank you for visiting this project!
